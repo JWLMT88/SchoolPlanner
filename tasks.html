@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Planner - Tasks</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="/js/dataStore.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>School Planner</h1>
+            <ul>
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="tasks.html" class="active">Tasks</a></li>
+                <li><a href="schedule.html">Schedule</a></li>
+                <li><a href="grades.html">Grades</a></li>
+                <li><a href="reminders.html">Reminders</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Tasks</h2>
+        <form id="taskForm">
+            <div class="form-group">
+                <label for="taskInput">New Task:</label>
+                <input type="text" id="taskInput" required>
+            </div>
+            <button type="submit">Add Task</button>
+        </form>
+        <ul id="taskList" class="task-list"></ul>
+    </main>
+    <script src="/js/tasks.js"></script>
+</body>
+</html>

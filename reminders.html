@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Planner - Reminders</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="/js/dataStore.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>School Planner</h1>
+            <ul>
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="tasks.html">Tasks</a></li>
+                <li><a href="schedule.html">Schedule</a></li>
+                <li><a href="grades.html">Grades</a></li>
+                <li><a href="reminders.html" class="active">Reminders</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Reminders</h2>
+        <form id="reminderForm">
+            <div class="form-group">
+                <label for="reminderText">Reminder:</label>
+                <input type="text" id="reminderText" required>
+            </div>
+            <div class="form-group">
+                <label for="reminderDate">Date:</label>
+                <input type="datetime-local" id="reminderDate" required>
+            </div>
+            <button type="submit">Add Reminder</button>
+        </form>
+        <div id="reminderList"></div>
+    </main>
+    <script src="/js/reminders.js"></script>
+</body>
+</html>

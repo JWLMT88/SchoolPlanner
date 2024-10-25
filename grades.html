@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Planner - Grades</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/dataStore.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>School Planner</h1>
+            <ul>
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="tasks.html">Tasks</a></li>
+                <li><a href="schedule.html">Schedule</a></li>
+                <li><a href="grades.html" class="active">Grades</a></li>
+                <li><a href="reminders.html">Reminders</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Grades</h2>
+        <form id="gradeForm">
+            <div class="form-group">
+                <label for="subjectInput">Subject:</label>
+                <input type="text" id="subjectInput" required>
+            </div>
+            <div class="form-group">
+                <label for="gradeInput">Grade:</label>
+                <input type="number" id="gradeInput" min="0" max="100" required>
+            </div>
+            <button type="submit">Add Grade</button>
+        </form>
+        <div id="gradeList"></div>
+        <canvas id="gradeChart"></canvas>
+    </main>
+    <script src="/js/grades.js"></script>
+</body>
+</html>
