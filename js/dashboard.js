@@ -1,4 +1,3 @@
-
 const dataStore = new DataStore();
 const renderTaskProgress = () => {
     const taskProgress = document.getElementById('taskProgress');
@@ -8,7 +7,9 @@ const renderTaskProgress = () => {
 
     taskProgress.innerHTML = `
         <p>Completed Tasks: ${completedTasks} / ${totalTasks}</p>
-        <progress value="${percentage}" max="100"></progress>
+        <div class="progress-container" style="background-color: #e0e0e0; border-radius: 5px; height: 10px; overflow: hidden;">
+            <div class="progress-bar" style="width: ${percentage}%;"></div>
+        </div>
     `;
 };
 
@@ -19,10 +20,15 @@ const renderUpcomingEvents = () => {
         .slice(0, 3);
 
     upcomingEvents.innerHTML = sortedEvents.map(event => `
-        <div class="event-item">
-            <span>${event.title}</span>
-            <span>${new Date(event.date).toLocaleDateString()}</span>
-        </div>
+        <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <div class="flex-1">
+                        <h4 class="font-medium text-gray-800">${event.title}</h4>
+                        <p class="text-sm text-gray-500">${new Date(event.date).toLocaleDateString()}</p>
+                    </div>
+                    <span class="text-xs font-medium text-indigo-600 bg-indigo-100 px-2 py-1 rounded-full">
+                        ${event.course}
+                    </span>
+                </div>
     `).join('');
 };
 
@@ -43,15 +49,22 @@ const renderGradeOverview = () => {
             datasets: [{
                 label: 'Grades',
                 data: dataStore.grades.map(grade => grade.grade),
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                backgroundColor: 'rgba(76, 201, 240, 0.6)',
+                borderColor: 'rgba(76, 201, 240, 1)',
+                borderWidth: 1
             }]
         },
         options: {
+            responsive: true,
             scales: {
                 y: {
                     beginAtZero: true,
                     max: 100
                 }
+            },
+            animation: {
+                duration: 1500,
+                easing: 'easeInOutQuart'
             }
         }
     });
@@ -59,15 +72,28 @@ const renderGradeOverview = () => {
 
 const renderUpcomingReminders = () => {
     const upcomingReminders = document.getElementById('upcomingReminders');
+    const upcomingNotifications = document.getElementById('notification-counter');
     const sortedReminders = dataStore.reminders
         .sort((a, b) => new Date(a.date) - new Date(b.date))
         .slice(0, 3);
+        const priorityColors = {
+            High: 'bg-red-100 text-red-600',
+            Medium: 'bg-yellow-100 text-yellow-600',
+            Low: 'bg-green-100 text-green-600'
+        };
+
+    upcomingNotifications.innerText = sortedReminders.length ;
 
     upcomingReminders.innerHTML = sortedReminders.map(reminder => `
-        <div class="reminder-item">
-            <span>${reminder.text}</span>
-            <span>${new Date(reminder.date).toLocaleString()}</span>
-        </div>
+        <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <div class="flex-1">
+                        <h4 class="font-medium text-gray-800">${reminder.text}</h4>
+                        <p class="text-sm text-gray-500">Due: ${new Date(reminder.date).toLocaleString()}</p>
+                    </div>
+                    <span class="text-xs font-medium ${priorityColors[reminder.priority]} px-2 py-1 rounded-full">
+                        ${reminder.priority}
+                    </span>
+                </div>
     `).join('');
 };
 
@@ -76,6 +102,8 @@ const renderDashboard = () => {
     renderUpcomingEvents();
     renderGradeOverview();
     renderUpcomingReminders();
+    
+    document.getElementById("welcome-text").innerText = "Welcome back, " + dataStore.getUserName() + "!";
 };
 
 document.addEventListener('DOMContentLoaded', renderDashboard);

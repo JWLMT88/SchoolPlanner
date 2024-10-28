@@ -19,29 +19,109 @@ const safeLocalStorageSet = (key, value) => {
 class DataStore {
     constructor() {
         this.tasks = safeJSONParse('tasks', []);
-        this.events = safeJSONParse('events', []);
         this.grades = safeJSONParse('grades', []);
         this.reminders = safeJSONParse('reminders', []);
+        this.userName = '';
+        this.courses = [];
+        this.loadUserProfile();
+        this.loadEvents();
     }
 
-    addTask(text) {
-        const newTask = { id: Date.now().toString(), text, completed: false };
-        this.tasks.push(newTask);
-        safeLocalStorageSet('tasks', this.tasks);
-        return newTask;
+    setUserName(name) {
+        this.userName = name;
+        this.saveUserProfile();
+    }
+
+    getUserName() {
+        return this.userName;
+    }
+
+    setCourses(courses) {
+        this.courses = courses;
+        this.saveUserProfile();
+    }
+
+    getCourses() {
+        return this.courses;
+    }
+
+    saveUserProfile() {
+        localStorage.setItem('userProfile', JSON.stringify({
+            userName: this.userName,
+            courses: this.courses
+        }));
+    }
+
+    loadUserProfile() {
+        const userProfile = JSON.parse(localStorage.getItem('userProfile'));
+        if (userProfile) {
+            this.userName = userProfile.userName;
+            this.courses = userProfile.courses;
+        }
+    }
+    addEvent(title, date, course, description) {
+        const event = {
+            id: Date.now().toString(),
+            title,
+            date,
+            course,
+            description
+        };
+        this.events.push(event);
+        this.saveEvents();
+    }
+
+    deleteEvent(id) {
+        this.events = this.events.filter(event => event.id !== id);
+        this.saveEvents();
+    }
+
+    saveEvents() {
+        localStorage.setItem('events', JSON.stringify(this.events));
+    }
+
+    loadEvents() {
+        const events = JSON.parse(localStorage.getItem('events'));
+        if (events) {
+            this.events = events;
+        }
+    }
+
+    addTask(text, course, description, materials) {
+        const task = {
+            id: Date.now().toString(),
+            text,
+            course,
+            description,
+            materials,
+            completed: false
+        };
+        this.tasks.push(task);
+        this.saveTasks();
     }
 
     toggleTask(id) {
-        const task = this.tasks.find(t => t.id === id);
+        const task = this.tasks.find(task => task.id === id);
         if (task) {
             task.completed = !task.completed;
-            safeLocalStorageSet('tasks', this.tasks);
+            this.saveTasks();
         }
     }
 
     deleteTask(id) {
-        this.tasks = this.tasks.filter(t => t.id !== id);
-        safeLocalStorageSet('tasks', this.tasks);
+        this.tasks = this.tasks.filter(task => task.id !== id);
+        this.saveTasks();
+    }
+
+    saveTasks() {
+        localStorage.setItem('tasks', JSON.stringify(this.tasks));
+    }
+
+    loadTasks() {
+        const tasks = JSON.parse(localStorage.getItem('tasks'));
+        if (tasks) {
+            this.tasks = tasks;
+        }
     }
 
     addEvent(title, date) {
